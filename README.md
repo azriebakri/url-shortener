@@ -1,4 +1,11 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+URL Shortener
+
+This web app shortens url(s).
+
+Was build using React and Bitly general shorten API and hosted in Firebase
+
+Host Location: https://url-shortener-8a712.firebaseapp.com
+
 
 ## Available Scripts
 

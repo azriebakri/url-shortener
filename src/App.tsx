@@ -1,7 +1,25 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { generateKeyPair } from 'crypto';
+import TextField from '@material-ui/core/TextField';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      '& .MuiTextField-root': {
+        margin: theme.spacing(1),
+        width: 200,
+      },
+    },
+    button: {
+      margin: theme.spacing(1),
+    },
+  }),
+);
 
 interface IbitlyAPI {
   [key: string]: any
@@ -13,12 +31,14 @@ class App extends React.Component<IbitlyAPI> {
     this.getBitlyShortURL = this.getBitlyShortURL.bind(this);
   } 
 
+  
   state = {
     generalAccessToken: 'b853531ceca87d5e0a4129cd09bc6b34e93c619f',
     group_guid: null,
     long_url: '',
     short_url: '',
-    respond_data: {} as IbitlyAPI
+    respond_data: {} as IbitlyAPI,
+
   };
 
   componentDidMount(){
@@ -77,30 +97,31 @@ class App extends React.Component<IbitlyAPI> {
   render(){
 
     let { long_url, respond_data } = this.state;
-    let link = null;
+    let link = <span> </span>;
     
     if(respond_data){
       if(!respond_data.hasOwnProperty('errors'))
-        link = <a target="_blank" rel="noopener noreferrer" href={respond_data.link}> {respond_data.link} </a>
+        link = <a id="error" target="_blank" rel="noopener noreferrer" href={respond_data.link}> {respond_data.link} </a>
       else
-        link = <span> {respond_data.description} </span>
+        link = <span id="error"> It seems that the URL is invalid :(  </span>
 
     }
 
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          {/* <img src={logo} className="App-logo" alt="logo" /> */}
+ 
           <div>
-            URL
+            <TextField id="outlined-basic" label="Website Url" variant="outlined" value={long_url} onChange={this.handleInputOnChange}/>
+
           </div>
           <div>
-            <input type="text" name="url" value={long_url} onChange={this.handleInputOnChange}/>
+            <Button variant="outlined" size="medium" color="primary" onClick={this.getBitlyShortURL}>
+              Shorten it!
+            </Button>
           </div>
-          <div>
-            <input type="submit" value="Submit" onClick={this.getBitlyShortURL}/>
-          </div>
-          <div>
+          <div id="link-div">
             {link} 
           </div>
         </header>
